@@ -1,0 +1,13 @@
+body {
+    background-color: #FCFCFC;
+}
+
+h1 {
+    color: black;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+#recentContacts {
+    margin-top: 35px;
+}

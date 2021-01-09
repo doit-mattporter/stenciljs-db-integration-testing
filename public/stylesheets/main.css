@@ -1,0 +1,22 @@
+.navbar a {
+    color: white;
+}
+
+body {
+    background-color: white;
+    text-rendering: optimizeLegibility;
+}
+
+p {
+    color: black;
+}
+
+.btn-info {
+    background-color: #002868;
+    border-color: #002868;
+}
+
+.btn-info:hover {
+    background-color: #16448f;
+    border-color: #16448f;
+}

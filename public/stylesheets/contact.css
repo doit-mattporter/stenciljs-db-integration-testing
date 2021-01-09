@@ -1,0 +1,19 @@
+h1 {
+    color: black;
+    font-weight: 700;
+    margin-bottom: 65px;
+}
+
+label {
+    color: black;
+    font-weight: 700;
+}
+
+.mainColumn {
+    margin-top: 35px;
+}
+
+#submitButton {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
