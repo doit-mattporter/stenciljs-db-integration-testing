@@ -9,4 +9,4 @@ Testing a basic NodeJS server with StencilJS components and their interactions w
 # Compute Engine StencilJS VM Setup
 * SSH onto the GCE StencilJS demo VM
 * Clone this git repo into /opt/stenciljs_demo/
-* SSH onto the GCE machine and run nodejs_bootstrap.sh
+* Run bootstrap/nodejs_bootstrap.sh
