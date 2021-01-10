@@ -1,6 +1,7 @@
 const bodyParser = require("body-parser"),
       express = require("express"),
       {getmysqlpool} = require("../modules/mysqlpool"),
+      mysql = require("mysql"),
       router = express.Router(),
       util = require("util");
 
@@ -26,7 +27,10 @@ router.post("/contact", (req, res) => {
     const lastName = req["body"]["contact"]["lastName"];
     const sourceEmail = req["body"]["contact"]["email"];
     const message = req["body"]["contact"]["message"];
-    const insertSql = `INSERT INTO Contacts (FirstName,LastName,Email,Message) VALUES ('${firstName}', '${lastName}', '${sourceEmail}', '${message}')`;
+    // const insertSql = `INSERT INTO Contacts (FirstName,LastName,Email,Message) VALUES ('${firstName}', '${lastName}', '${sourceEmail}', '${message}')`;
+    var insertSql = "INSERT INTO Contacts (FirstName,LastName,Email,Message) VALUES (?, ?, ?, ?)";
+    const inserts = [firstName, lastName, sourceEmail, message];
+    insertSql = mysql.format(insertSql, inserts);
     if (firstName.length >= 2 &&
         firstName.length <= 35 &&
         lastName.length >= 2 &&
