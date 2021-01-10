@@ -33,10 +33,10 @@ http \
 mysql \
 @stencil/core@latest \
 --save-exact
+
 npm install -g nodemon
 
 # Launch web server
-# npm start
-(nohup nodemon /opt/stenciljs_demo/server.js > /opt/stenciljs_project.log 2> /opt/stenciljs_project_err.log &)
+(nohup nodemon /opt/stenciljs_demo/server.js > /opt/stenciljs_demo.log 2> /opt/stenciljs_demo_err.log &)
 sleep 0.5
 rm -f nohup.out

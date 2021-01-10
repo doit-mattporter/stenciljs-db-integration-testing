@@ -9,7 +9,7 @@ gcloud services enable sqladmin.googleapis.com
 # Create bucket where NodeJS code resides. Will get bootstraped onto server.
 gsutil mb -p $PROJECT_ID -l us-central1 -b on gs://$CODE_BUCKET/
 
-# Create NodeJS service demo'ing StencilJS elements
+# Create NodeJS service account for StencilJS demo
 gcloud iam service-accounts create stenciljs-demo-sa \
     --description="Service account for StencilJS Demo running on GCE" \
     --display-name="StencilJS Demo Service Account"
@@ -30,6 +30,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:stenciljs-demo-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/cloudsql.client"
 
+# Create StencilJS demo VM
 gcloud compute --project=$PROJECT_ID instances create nodejs-stenciljs \
     --zone=us-central1-a \
     --machine-type=e2-medium \
@@ -38,8 +39,8 @@ gcloud compute --project=$PROJECT_ID instances create nodejs-stenciljs \
     --metadata=startup-script=echo\ \"Bootstrap\ script\ here\" \
     --maintenance-policy=MIGRATE \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
-    --service-account=
-    --tags=http-server,https-server \
+    --service-account=stenciljs-demo-sa@$PROJECT_ID.iam.gserviceaccount.com \
+    --tags=http-server,https-server,mysql-client \
     --image=debian-10-buster-v20201216 \
     --image-project=debian-cloud \
     --boot-disk-size=10GB \
@@ -74,7 +75,7 @@ gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-mysql \
     --network=default \
     --action=ALLOW \
     --rules=tcp:3306 \
-    --target-tags=https-server
+    --target-tags=mysql-client
 
 # Create a Secret Manager secret holding the Cloud SQL admin password
 echo $MYSQL_ROOT_PWD | gcloud secrets create wfe-mysql-root --data-file=-
@@ -87,6 +88,7 @@ gcloud sql instances create wfe-mysql-2 \
     --zone=us-central1-a \
     --root-password=$MYSQL_ROOT_PWD
 
+# Initialize MySQL VM with empty contactdb database, Contacts table, and contact_form_write_user user
 gcloud sql --project=$PROJECT_ID databases create contactdb --instance=wfe-mysql
 gcloud sql --project=$PROJECT_ID users create contact_form_write_user --instance=wfe-mysql --host="%" --password=$MYSQL_CONTACT_USER_PWD
 
