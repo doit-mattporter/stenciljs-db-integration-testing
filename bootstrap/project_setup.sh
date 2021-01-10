@@ -26,6 +26,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member="serviceAccount:stenciljs-demo-sa@$PROJECT_ID.iam.gserviceaccount.com" \
     --role="roles/storage.objectViewer"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="serviceAccount:stenciljs-demo-sa@$PROJECT_ID.iam.gserviceaccount.com" \
+    --role="roles/cloudsql.client"
+
 gcloud compute --project=$PROJECT_ID instances create nodejs-stenciljs \
     --zone=us-central1-a \
     --machine-type=e2-medium \
@@ -64,6 +68,14 @@ gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-https \
     --source-ranges=0.0.0.0/0 \
     --target-tags=https-server
 
+gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-mysql \
+    --direction=EGRESS \
+    --priority=1000 \
+    --network=default \
+    --action=ALLOW \
+    --rules=tcp:3306 \
+    --target-tags=https-server
+
 # Create a Secret Manager secret holding the Cloud SQL admin password
 echo $MYSQL_ROOT_PWD | gcloud secrets create wfe-mysql-root --data-file=-
 echo $MYSQL_CONTACT_USER_PWD | gcloud secrets create wfe-mysql-contact-user --data-file=-
@@ -76,4 +88,17 @@ gcloud sql instances create wfe-mysql-2 \
     --root-password=$MYSQL_ROOT_PWD
 
 gcloud sql --project=$PROJECT_ID databases create contactdb --instance=wfe-mysql
-gcloud sql --project=$PROJECT_ID users create contact_form_write_user --instance=wfe-mysql
+gcloud sql --project=$PROJECT_ID users create contact_form_write_user --instance=wfe-mysql --host="%" --password=$MYSQL_CONTACT_USER_PWD
+
+sql_cmd="
+CREATE TABLE Contacts (
+    ContactID int NOT NULL AUTO_INCREMENT,
+    FirstName varchar(75) NOT NULL,
+    LastName varchar(75) NOT NULL,
+    Email varchar(100),
+    Message varchar(1000),
+    PRIMARY KEY (ContactID)
+);"
+MYSQL_IP_STR=`gcloud sql instances describe wfe-mysql --project $PROJECT_ID --format 'value(ipAddresses.ipAddress)'`
+MYSQL_IP_ARRAY=(${MYSQL_IP_STR//;/ })
+mysql -u root -p$MYSQL_CONTACT_USER_PWD -h ${MYSQL_IP_ARRAY[0]} contactdb -e "${sql_cmd}"

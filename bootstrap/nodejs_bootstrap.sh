@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Install basic Linux tools
+apt-get update
 apt-get -y dist-upgrade
 apt-get -y install git
+# Install MariaDB to enable MySQL client connectivity
+apt-get -y install mariadb-server
 
 # Install Node.js + NPM + Express and nodemon
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
