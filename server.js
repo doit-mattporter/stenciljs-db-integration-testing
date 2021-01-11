@@ -19,7 +19,8 @@ var indexRoutes = require("./routes/index");
 
 app.use("/", indexRoutes);
 
-// app.listen(80)
+const listenPort = 8080;
+// app.listen(listenPort)
 // Create a cluster of servers, one for each vCPU, all listening on the same port
 const httpServer = http.createServer(app);
 if (cluster.isMaster) {
@@ -32,7 +33,7 @@ if (cluster.isMaster) {
         console.log(`worker ${worker.process.pid} died`);
     });
 } else {
-    httpServer.listen(80, "0.0.0.0", () => {
-        console.log("HTTP server running on port 80");
+    httpServer.listen(listenPort, "0.0.0.0", () => {
+        console.log(`HTTP server running on port ${listenPort}`);
     })
 };

@@ -21,7 +21,7 @@ nvm install stable
 git clone https://github.com/ionic-team/stencil-component-starter /opt/stenciljs_demo/
 cd /opt/stenciljs_demo/
 git remote rm origin
-npm init stencil
+npm init
 npm install body-parser \
 child-process \
 cluster \

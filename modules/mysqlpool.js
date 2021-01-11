@@ -32,7 +32,7 @@ const mysqlHostIp = getMysqlHostIp().then((result) => {
     return result;
 });
 
-async function getmysqlpool() {
+async function getMysqlPool() {
     return mysql.createPool({
         connectionLimit: 10,
         host: await mysqlHostIp,
@@ -45,4 +45,4 @@ async function getmysqlpool() {
     });
 };
 
-module.exports.getmysqlpool = getmysqlpool;
+module.exports.getMysqlPool = getMysqlPool;
