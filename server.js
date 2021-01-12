@@ -1,17 +1,19 @@
 // Import libraries
 const bodyParser = require("body-parser"),
-      cluster = require("cluster"),
-      express = require("express"),
-      http = require("http");
+    cluster = require("cluster"),
+    express = require("express"),
+    http = require("http");
 const numCPUs = require("os").cpus().length;
 
 // Configure Express app
 const app = express();
 app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({
-    "limit": "1mb",
-    "extended": true
-}));
+app.use(
+    bodyParser.urlencoded({
+        limit: "1mb",
+        extended: true,
+    })
+);
 app.set("view engine", "ejs");
 
 // Set routes
@@ -35,5 +37,5 @@ if (cluster.isMaster) {
 } else {
     httpServer.listen(listenPort, "0.0.0.0", () => {
         console.log(`HTTP server running on port ${listenPort}`);
-    })
-};
+    });
+}

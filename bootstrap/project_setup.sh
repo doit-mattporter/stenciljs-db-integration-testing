@@ -91,6 +91,15 @@ gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-http \
     --source-ranges=0.0.0.0/0 \
     --target-tags=http-server
 
+gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-http-testing \
+    --direction=INGRESS \
+    --priority=1000 \
+    --network=default \
+    --action=ALLOW \
+    --rules=tcp:8080 \
+    --source-ranges=0.0.0.0/0 \
+    --target-tags=http-server-testing
+
 gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-https \
     --direction=INGRESS \
     --priority=1000 \
@@ -113,18 +122,17 @@ gcloud compute --project=$PROJECT_ID firewall-rules create default-allow-mysql \
 # gsutil cp gs://$CODE_BUCKET/stenciljs_demo.tar.gz .
 # tar -C /opt/ -zxf stenciljs_demo.tar.gz
 # chmod +x /opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap_part*.sh
-# /opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap_part1.sh
-# /opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap_part2.sh
+# /opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap.sh
 gcloud compute --project=$PROJECT_ID instances create nodejs-stenciljs \
     --zone=$ZONE \
     --machine-type=e2-medium \
     --subnet=default \
     --network-tier=PREMIUM \
-    --metadata=startup-script=gsutil\ cp\ gs://\$CODE_BUCKET/stenciljs_demo.tar.gz\ .$'\n'tar\ -C\ /opt/\ -zxf\ stenciljs_demo.tar.gz$'\n'chmod\ \+x\ /opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap_part\*.sh$'\n'/opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap_part1.sh$'\n'/opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap_part2.sh \
+    --metadata=startup-script=gsutil\ cp\ gs://$CODE_BUCKET/stenciljs_demo.tar.gz\ .$'\n'tar\ -C\ /opt/\ -zxf\ stenciljs_demo.tar.gz$'\n'chmod\ \+x\ /opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap.sh$'\n'/opt/stenciljs-db-integration-testing/bootstrap/nodejs_bootstrap.sh \
     --maintenance-policy=MIGRATE \
     --scopes=https://www.googleapis.com/auth/cloud-platform \
     --service-account=stenciljs-demo-sa@$PROJECT_ID.iam.gserviceaccount.com \
-    --tags=http-server,https-server,mysql-client \
+    --tags=http-server,https-server,mysql-client,http-server-testing \
     --image=debian-10-buster-v20201216 \
     --image-project=debian-cloud \
     --boot-disk-size=10GB \

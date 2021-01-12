@@ -23,8 +23,8 @@ async function getMysqlHostIp() {
     const projectId = await auth.getProjectId();
     // There is no GCP NodeJS package for Cloud SQL, must use gcloud
     const ipArray = execSync(`gcloud sql instances describe wfe-mysql --project ${projectId} --format 'value(ipAddresses.ipAddress)'`).toString().replace("\n", "").split(";")
-    // const ipAddress = ipArray.pop(); // If only a public or priate IP is available, will return this. If both are available, returns the private IP.
-    const ipAddress = ipArray[0]; // If only a public or priate IP is available, will return this. If both are available, returns the private IP.
+    const ipAddress = ipArray.pop(); // If only a public or private IP is available, will return this. If both are available, returns the private IP.
+    // const ipAddress = ipArray[1]; // If only a public or private IP is available, will return this. If both are available, returns the private IP.
     return ipAddress;
 }
 
