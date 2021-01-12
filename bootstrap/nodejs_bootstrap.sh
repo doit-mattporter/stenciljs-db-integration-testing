@@ -6,20 +6,12 @@ apt-get -y install git
 # Install MariaDB to enable MySQL client connectivity
 apt-get -y install mariadb-server
 
-# Install Node.js + NPM + Express and nodemon
+# Install Node.js + NPM
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 exec bash # Needed to discover nvm
 nvm install stable
 
-# Install code via ZIP file from GitHub
-# cd /opt/
-# gsutil cp gs://$CODE_BUCKET/stenciljs_project.zip /opt/
-# unzip stenciljs_project.zip -d stenciljs_project/
-# rm -f stenciljs_project.zip
-
-# Set up app directory
-git clone https://github.com/ionic-team/stencil-component-starter /opt/stenciljs_demo/
-cd /opt/stenciljs_demo/
+# Install nodemon and required npm packages
 git remote rm origin
 npm init
 npm install body-parser \
@@ -37,6 +29,6 @@ mysql \
 npm install -g nodemon
 
 # Launch web server
-(nohup nodemon /opt/stenciljs_demo/server.js > /opt/stenciljs_demo.log 2> /opt/stenciljs_demo_err.log &)
+(nohup nodemon /opt/stenciljs-db-integration-testing/server.js > /opt/stenciljs_demo.log 2> /opt/stenciljs_demo_err.log &)
 sleep 0.5
 rm -f nohup.out

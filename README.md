@@ -1,12 +1,20 @@
 # stenciljs-db-integration-testing
-Testing a basic NodeJS server with StencilJS components and their interactions with GCP-managed databases
 
-# GCP Project setup
-* Create a new GCP project and open up Cloud Shell
-* Run bootstrap/project_variables.sh
-* Run bootstrap/project_setup.sh
+Demo of an automated GCP deployment for a basic NodeJS + Bootstrap4 server utilizing StencilJS components which interacts with a MySQL database on Cloud SQL
 
-# Compute Engine StencilJS VM Setup
-* SSH onto the GCE StencilJS demo VM
-* Clone this git repo into /opt/stenciljs_demo/
-* Run bootstrap/nodejs_bootstrap.sh
+## **GCP Project setup**
+
+Create a new GCP project, open up Cloud Shell, and run the following:
+
+```
+git clone https://github.com/doit-mattporter/stenciljs-db-integration-testing.git
+# If desired, edit stenciljs-db-integration-testing/bootstrap/project_variables.sh
+chmod +x stenciljs-db-integration-testing/bootstrap/project_setup.sh
+./stenciljs-db-integration-testing/bootstrap/project_setup.sh
+```
+
+This
+
+## **Compute Engine StencilJS VM*
+
+To manually restart nodemon, SSH onto the GCE StencilJS demo VM and run: `nodemon /opt/stenciljs-db-integration-testing/server.js`. Make sure nodemon is not already running.
