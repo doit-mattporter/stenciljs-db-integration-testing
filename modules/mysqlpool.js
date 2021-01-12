@@ -23,8 +23,8 @@ async function getMysqlHostIp() {
     const projectId = await auth.getProjectId();
     // There is no GCP NodeJS package for Cloud SQL, must use gcloud
     const ipArray = execSync(`gcloud sql instances describe wfe-mysql --project ${projectId} --format 'value(ipAddresses.ipAddress)'`).toString().replace("\n", "").split(";")
-    const ipAddress = ipArray.pop(); // If only a public or private IP is available, will return this. If both are available, returns the private IP.
-    // const ipAddress = ipArray[1]; // If only a public or private IP is available, will return this. If both are available, returns the private IP.
+    // const ipAddress = ipArray.pop(); // If only a public or private IP is available, will return this. If both are available, returns the private IP.
+    const ipAddress = ipArray[1]; // If only a public or private IP is available, will return this. If both are available, returns the private IP.
     return ipAddress;
 }
 
@@ -36,11 +36,9 @@ async function getMysqlPool() {
     return mysql.createPool({
         connectionLimit: 10,
         host: await mysqlHostIp,
-        // host: "10.52.80.3",
         port: 3306,
         user: "contact_form_write_user",
         password: await password,
-        // password: "ZWM2NjU5ZTUwMzM1MDU0MDZjODQ0MmUy",
         database: "contactdb"
     });
 };

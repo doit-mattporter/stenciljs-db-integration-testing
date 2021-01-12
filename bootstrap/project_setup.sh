@@ -43,15 +43,15 @@ gcloud beta sql instances create wfe-mysql \
     --network="projects/$PROJECT_ID/global/networks/default" \
     --root-password=$MYSQL_ROOT_PWD
 
+# Initialize MySQL VM with empty contactdb database, Contacts table, and contact_form_write_user user
+gcloud sql --project=$PROJECT_ID databases create contactdb --instance=wfe-mysql
+gcloud sql --project=$PROJECT_ID users create contact_form_write_user --instance=wfe-mysql --host="%" --password=$MYSQL_CONTACT_USER_PWD
+
 # Run queries for MySQL from Cloud Shell through Cloud SQL Proxy
 wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
 chmod +x cloud_sql_proxy
 nohup ./cloud_sql_proxy -instances=$PROJECT_ID:$REGION:wfe-mysql=tcp:3306 &
-sleep 3
-
-# Initialize MySQL VM with empty contactdb database, Contacts table, and contact_form_write_user user
-gcloud sql --project=$PROJECT_ID databases create contactdb --instance=wfe-mysql
-gcloud sql --project=$PROJECT_ID users create contact_form_write_user --instance=wfe-mysql --host="%" --password=$MYSQL_CONTACT_USER_PWD
+sleep 5
 
 sql_cmd="
 CREATE TABLE Contacts (
