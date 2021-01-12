@@ -28,7 +28,7 @@ gcloud compute addresses create google-managed-services-default \
     --global \
     --purpose=VPC_PEERING \
     --prefix-length=20 \
-    --network="projects/$PROJECT_ID/global/networks/default"
+    --network="default"
 
 gcloud services vpc-peerings connect \
     --service=servicenetworking.googleapis.com \
@@ -40,7 +40,7 @@ gcloud beta sql instances create wfe-mysql \
     --database-version=MYSQL_8_0 \
     --tier=db-n1-standard-1 \
     --zone=$ZONE \
-    --network="projects/$PROJECT_ID/global/networks/default" \
+    --network="default" \
     --root-password=$MYSQL_ROOT_PWD
 
 # Initialize MySQL VM with empty contactdb database, Contacts table, and contact_form_write_user user
@@ -62,7 +62,7 @@ CREATE TABLE Contacts (
     Message varchar(1000),
     PRIMARY KEY (ContactID)
 );"
-mysql -u root -p$MYSQL_CONTACT_USER_PWD --host 127.0.0.1 contactdb -e "$sql_cmd"
+mysql -u root -p$MYSQL_ROOT_PWD --host 127.0.0.1 contactdb -e "$sql_cmd"
 
 # Create NodeJS service account for StencilJS demo
 gcloud iam service-accounts create stenciljs-demo-sa \
