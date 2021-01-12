@@ -6,7 +6,7 @@ Demo of an automated GCP deployment for a basic NodeJS + Bootstrap4 server utili
 
 Create a new GCP project, open up Cloud Shell, and run the following:
 
-```
+```bash
 git clone https://github.com/doit-mattporter/stenciljs-db-integration-testing.git
 # If desired, edit stenciljs-db-integration-testing/bootstrap/project_variables.sh
 chmod +x stenciljs-db-integration-testing/bootstrap/project_setup.sh
@@ -15,6 +15,6 @@ chmod +x stenciljs-db-integration-testing/bootstrap/project_setup.sh
 
 ## Compute Engine StencilJS VM
 
-The web server listens at: http://<vm_public_ip>:8080
+The web server listens at: `http://<vm_public_ip>:8080`
 
 To manually restart nodemon, SSH onto the VM and run: `nodemon /opt/stenciljs-db-integration-testing/server.js`. Make sure nodemon is not already running.
