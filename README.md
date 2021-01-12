@@ -1,6 +1,6 @@
 # stenciljs-db-integration-testing
 
-Demo of an automated GCP deployment for a basic NodeJS + Bootstrap4 server utilizing StencilJS components which interacts with a MySQL database on Cloud SQL
+Within a new GCP project, following the automated deployment instructions below will create a basic NodeJS + Bootstrap 4 web server utilizing StencilJS components that interacts with a MySQL database on Cloud SQL. The web server demonstrates (1) writes to a MySQL DB hosted on Cloud SQL via a Contact form page, and (2) reads from that database via the Homepage.
 
 ## GCP Project setup
 
